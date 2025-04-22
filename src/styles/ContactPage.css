@@ -1,0 +1,246 @@
+input,
+textarea {
+  font-family: inherit;
+  border: 1px solid lightblue;
+  padding: 8px 12px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(133, 171, 214, 0.3);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Main Content */
+.main-content {
+  padding: 48px 24px 64px;
+}
+
+.contact-container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 48px;
+  /* Will be animated with GSAP */
+  perspective: 1000px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-header h1 {
+  font-size: 48px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  font-family: "Bruno Ace", sans-serif;
+  color: black;
+  position: relative;
+  display: inline-block;
+}
+
+.contact-header p {
+  max-width: 600px;
+  margin: 0 auto;
+  color: black;
+  font-size: 18px;
+}
+
+/* Contact Form */
+.contact-form {
+  max-width: 540px;
+  margin: 0 auto 48px;
+}
+
+.form-element {
+  margin-bottom: 24px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.form-element label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  position: relative;
+  padding-left: 4px;
+}
+
+.form-element label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 16px;
+  background-color: lightblue;
+  opacity: 0.7;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: lightblue;
+  margin: 48px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  background-color: lightblue;
+  opacity: 0.2;
+  transform: translateX(-50%);
+}
+
+/* Contact Info */
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  /* Will be animated by GSAP */
+}
+
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  background-color: lightblue;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.contact-item:hover .contact-icon {
+  background-color: rgb(17, 33, 44);
+  color: white;
+  transform: scale(1.1) rotate(5deg);
+}
+
+.contact-details h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+}
+
+.contact-details h3::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: lightblue;
+  transition: width 0.3s ease;
+}
+
+.contact-item:hover .contact-details h3::after {
+  width: 100%;
+}
+
+.phone-number,
+.email a {
+  font-weight: 600;
+  color: var(--primary-color);
+  transition: color 0.3s;
+}
+
+.email a:hover {
+  color: lightblue;
+}
+
+.contact-time,
+.address {
+  margin-top: 8px;
+  color: var(--light-text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Custom animation for form fields */
+@keyframes shakeError {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+input:invalid:focus,
+textarea:invalid:focus {
+  border-color: #f00;
+  animation: shakeError 0.4s forwards;
+}
+
+/* Enhanced Responsive Styles */
+@media (max-width: 1000px) {
+  .contact-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-info {
+    grid-template-columns: 1fr;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+  }
+}
