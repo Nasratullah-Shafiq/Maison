@@ -1,0 +1,27 @@
+.size-selector {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.size-option {
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  border: 1px solid lightblue;
+  border-radius: var(--radius-medium);
+  cursor: pointer;
+  transition: var(--transition-main);
+  font-weight: 500;
+}
+
+.size-option:hover {
+  background-color: rgb(17, 33, 44);
+  color: white;
+  border-color: var(--color-secondary);
+}
+
+.size-option.active {
+  background-color: rgb(17, 33, 44);
+  color: white;
+  border-color: var(--color-primary);
+}
