@@ -1,0 +1,283 @@
+.button-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.touch-nav {
+  position: relative;
+
+  color: black;
+  font-weight: 500;
+  border: none;
+  padding: 5px 3px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+  display: flex;
+  user-select: none;
+}
+
+.corner {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: lightblue;
+  z-index: 0;
+}
+
+.top-left {
+  top: -2px;
+  left: -2px;
+  transform-origin: top left;
+}
+
+.top-right {
+  top: -2px;
+  right: -2px;
+  transform-origin: top right;
+}
+
+.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  transform-origin: bottom left;
+}
+
+.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  transform-origin: bottom right;
+}
+.button-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.touch-nav {
+  position: relative;
+  background-color: white;
+  color: black;
+  font-weight: 500;
+  border: none;
+  padding: 5px 3px;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.touch-nav::after {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+.corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: lightblue;
+  z-index: 0;
+}
+
+.top-left {
+  top: -2px;
+  left: -2px;
+  transform-origin: top left;
+}
+
+.top-right {
+  top: -2px;
+  right: -2px;
+  transform-origin: top right;
+}
+
+.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  transform-origin: bottom left;
+}
+
+.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  transform-origin: bottom right;
+}
+.top-banner {
+  background-color: #f6f8fa;
+  padding: 8px 0;
+  border-bottom: 1px solid #d1d5da;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 10px;
+}
+
+.banner-content span {
+  font-weight: 600;
+}
+
+.learn-more {
+  color: #0366d6;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.learn-more:hover {
+  text-decoration: underline;
+}
+
+.close-banner {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #57606a;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.close-banner:hover {
+  color: #24292e;
+}
+
+.site-header {
+  padding: 16px 0;
+  background-color: white;
+  border-bottom: 1px solid #eaecef;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  font-family: "Bruno Ace", sans-serif;
+  font-weight: 600;
+  color: black;
+}
+.main-nav {
+  margin-left: 2px;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 10px;
+}
+
+.nav-item a {
+  color: var(--text-color);
+  transition: color 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--text-color);
+}
+
+.icon-btn svg {
+  width: 23px;
+  height: 23px;
+}
+.bag-icon {
+  height: 25px;
+  width: 25px;
+}
+.cart-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.badge-notification {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  background-color: lightblue;
+  color: black;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  height: 1.25rem;
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .nav-list {
+    display: none;
+  }
+
+  .banner-content p {
+    display: none;
+  }
+
+  .header-container {
+    padding: 0 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-header {
+    padding: 20px 0;
+  }
+}

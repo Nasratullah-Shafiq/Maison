@@ -1,0 +1,264 @@
+.category-section {
+  padding: 80px 0;
+  background-color: #f6f8fa;
+  position: relative;
+}
+
+.category-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 0px;
+}
+
+.category-header h2 {
+  font-size: 36px;
+  margin-bottom: 24px;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-family: "Bruno Ace", sans-serif;
+}
+
+.category-header p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--secondary-color);
+  margin-bottom: 24px;
+}
+
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--primary-color);
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-text:hover {
+  background-color: rgb(17, 33, 44);
+}
+
+.btn-arrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.btn-text:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.category-card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.category-image {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.category-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-card:hover .category-image img {
+  transform: scale(1.05);
+}
+
+.category-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: white;
+  font-weight: 600;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  font-family: "Bruno Ace", sans-serif;
+}
+
+.category-card:hover .category-name {
+  background-color: rgb(24, 49, 71);
+  color: white;
+}
+
+.category-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-arrow {
+  transform: translateX(4px);
+  filter: brightness(10);
+}
+
+@media (max-width: 992px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .category-header h2 {
+    font-size: 28px;
+  }
+
+  .category-header p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-header {
+    margin-bottom: 40px;
+  }
+}
+
+.button-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.touch-button {
+  position: relative;
+  background-color: rgb(24, 49, 71);
+  color: white;
+  font-weight: 500;
+  border: none;
+  padding: 15px 30px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+  display: flex;
+  user-select: none;
+}
+
+.touch-button::after {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+.corner2 {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  background-color: rgb(24, 49, 71);
+  z-index: 0;
+}
+
+.top-left {
+  top: -2px;
+  left: -2px;
+  transform-origin: top left;
+}
+
+.top-right {
+  top: -2px;
+  right: -2px;
+  transform-origin: top right;
+}
+
+.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  transform-origin: bottom left;
+}
+
+.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  transform-origin: bottom right;
+}
+.button-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.touch-button {
+  position: relative;
+  background-color: lightblue;
+  color: black;
+  font-weight: 500;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.touch-button::after {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+.corner2 {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: black;
+  z-index: 0;
+}
+
+.top-left {
+  top: -2px;
+  left: -2px;
+  transform-origin: top left;
+}
+
+.top-right {
+  top: -2px;
+  right: -2px;
+  transform-origin: top right;
+}
+
+.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  transform-origin: bottom left;
+}
+
+.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  transform-origin: bottom right;
+}
