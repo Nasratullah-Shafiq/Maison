@@ -1,0 +1,56 @@
+.color-switch {
+  display: inline-block;
+  align-items: center;
+}
+
+.color-switch-label {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 20px;
+  color: #4b5563;
+}
+
+.color-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 20px;
+}
+
+.color-option {
+  width: 20px;
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.active {
+  transform: scale(1.2);
+}
+
+.color-option::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .color-switch {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .color-switch-label {
+    margin-bottom: 0.5rem;
+  }
+}
