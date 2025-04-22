@@ -1,0 +1,200 @@
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  background: url("../assets/bg.png") no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.hero-content h1 {
+  font-size: clamp(66px, 5vw, 48px);
+  font-family: "Bruno Ace", sans-serif;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+.hero-content span {
+  color: rgb(139, 198, 218);
+}
+.hero-content p {
+  font-size: clamp(16px, 2vw, 18px);
+  color: black;
+  margin-bottom: 32px;
+  line-height: 1.6;
+  max-width: 80%;
+}
+
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.button-container:hover .arrow-icon {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .hero-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .hero-content {
+    order: 1;
+    padding: 0 20px;
+  }
+
+  .hero-image {
+    order: 0;
+    width: 100%;
+  }
+
+  .hero-content p {
+    max-width: 100%;
+  }
+
+  .hero-content h1 {
+    max-width: 50%;
+  }
+}
+.button-containers {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.touch-button {
+  position: relative;
+  background-color: lightblue;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 15px 30px;
+  font-size: 17px;
+  cursor: pointer;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+  display: flex;
+  user-select: none;
+}
+
+.touch-button::after {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+.corner2 {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  background-color: black;
+  z-index: 0;
+}
+
+.top-left {
+  top: -2px;
+  left: -2px;
+  transform-origin: top left;
+}
+
+.top-right {
+  top: -2px;
+  right: -2px;
+  transform-origin: top right;
+}
+
+.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  transform-origin: bottom left;
+}
+
+.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  transform-origin: bottom right;
+}
+.button-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.touch-button {
+  position: relative;
+  background-color: lightblue;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  cursor: pointer;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.touch-button::after {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+.corner2 {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: black;
+  z-index: 0;
+}
+
+.top-left {
+  top: -2px;
+  left: -2px;
+  transform-origin: top left;
+}
+
+.top-right {
+  top: -2px;
+  right: -2px;
+  transform-origin: top right;
+}
+
+.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  transform-origin: bottom left;
+}
+
+.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  transform-origin: bottom right;
+}
