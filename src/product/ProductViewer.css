@@ -1,0 +1,142 @@
+.product-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.product-viewer-container {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(17, 33, 44);
+
+  overflow: hidden;
+  position: relative;
+  perspective: 1000px;
+  cursor: move;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Subtle grid pattern background */
+.product-viewer-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.5) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: 1;
+  opacity: 0.2;
+}
+
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.product-image {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+  will-change: transform;
+}
+
+.product-images img {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.15));
+  transition: filter 0.3s ease;
+}
+
+/* Apply additional shadow based on rotation */
+.product-images::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+.product-thumbnails {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  border: 1px solid lightblue;
+  border-radius: var(--radius-medium);
+  cursor: pointer;
+  transition: var(--transition-main);
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbnail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: transform 0.6s ease;
+  transform: skewX(-15deg);
+}
+
+.thumbnail:hover {
+  background-color: rgb(17, 33, 44);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.thumbnail:hover::before {
+  transform: translateX(200%) skewX(-15deg);
+}
+
+.thumbnail.active {
+  background-color: rgb(17, 33, 44);
+  color: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .product-viewer-container {
+    height: 500px;
+  }
+
+  .product-images img {
+    max-height: 400px;
+  }
+}
