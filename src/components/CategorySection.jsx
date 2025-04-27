@@ -6,7 +6,7 @@ import arrow from "../assets/arrow.svg";
 import lifestyleImg from "../assets/bed.jpg";
 import apparelImg from "../assets/bb1.jpg";
 import collectiblesImg from "../assets/pillow-blue2.jpg";
-import "../styles/CategorySection.css";
+import "../styles/Hero.css";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -17,7 +17,6 @@ const CategorySection = () => {
   const textRef = useRef(null);
   const categoriesRef = useRef(null);
 
-  const imageRef = useRef(null);
   const buttonRef = useRef(null);
   const topLeftRef = useRef(null);
   const topRightRef = useRef(null);
@@ -68,7 +67,6 @@ const CategorySection = () => {
       button.removeEventListener("mouseenter", handleMouseEnter);
       button.removeEventListener("mouseleave", handleMouseLeave);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -138,19 +136,22 @@ const CategorySection = () => {
       id: 1,
       name: "Bedspreads",
       image: lifestyleImg,
-      link: "/pages",
+      link: "/shop",
+      category: "bedspreads",
     },
     {
       id: 2,
-      name: "Blanets",
+      name: "Blankets",
       image: apparelImg,
-      link: "/pages",
+      link: "/shop",
+      category: "blankets",
     },
     {
       id: 3,
       name: "Pillows",
       image: collectiblesImg,
-      link: "/pages",
+      link: "/shop",
+      category: "pillows",
     },
   ];
 
@@ -160,8 +161,9 @@ const CategorySection = () => {
         <div className="category-header">
           <h2 ref={titleRef}>Shop by category</h2>
           <p ref={textRef}>
-            Check out the latest products: from stylish new apparel, to
-            lifestyle essentials and desktop collectibles—and beyond.
+            Explore our premium textile collection to transform your home: from
+            luxurious bedspreads and cozy blankets to stylish decorative
+            pillows.
           </p>
           <Link to="/shop">
             <div className="button-container" ref={buttonRef}>
@@ -180,7 +182,8 @@ const CategorySection = () => {
         <div className="categories-grid" ref={categoriesRef}>
           {categories.map((category) => (
             <Link
-              to={category.link}
+              to={`/shop?category=${category.category}`}
+              state={{ category: category.category }}
               className="category-card"
               key={category.id}
             >
