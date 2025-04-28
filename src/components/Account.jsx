@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "../styles/Account.css";
+import "../styles/Hero.css";
 
 const Account = () => {
   const pageRef = useRef(null);
