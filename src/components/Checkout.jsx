@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "../styles/Checkout.css";
+import "../styles/Hero.css";
 
 const Checkout = () => {
   const pageRef = useRef(null);
