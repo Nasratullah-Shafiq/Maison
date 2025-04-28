@@ -1,92 +1,76 @@
 import { useGSAP } from "@gsap/react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import { useRef, useEffect } from "react";
 import "../styles/CartPage.css";
-import Checkout from "./Checkout";
+import arrow from "../assets/arrow.svg";
 
 const CartItem = ({ item, removeFromCart, updateQuantity }) => {
   return (
-    <div className="cart-item ">
-      {/* Product Image (2 cols) */}
-      <div className="md:col-span-2">
-        <Link to={`/product/${item.slug}`} className="block">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-[100px] object-cover rounded-md"
-          />
+    <div className="cart-item">
+      {/* Product Image */}
+      <div className="cart-item-image">
+        <Link to={`/product/${item.id}`}>
+          <img src={item.image} alt={item.name} />
         </Link>
       </div>
 
-      {/* Product Details (4 cols) */}
-      <div className="md:col-span-4">
-        <Link
-          to={`/product/${item.slug}`}
-          className="text-lg font-medium hover:text-primary-600 transition-colors"
-        >
-          {item.name}
-        </Link>
+      {/* Product Details */}
+      <div className="cart-item-details">
+        <h3>
+          <Link to={`/product/${item.id}`}>{item.name}</Link>
+        </h3>
 
         {item.selectedColor && (
-          <p className="text-sm text-gray-500 mt-1">
+          <p>
             Color: <span className="font-medium">{item.selectedColor}</span>
           </p>
         )}
 
         {item.selectedSize && (
-          <p className="text-sm text-gray-500">
+          <p>
             Size: <span className="font-medium">{item.selectedSize}</span>
           </p>
         )}
       </div>
 
-      {/* Quantity (3 cols) */}
-      <div className="md:col-span-3 flex items-center">
-        <div className="flex items-center">
-          <button
-            onClick={() =>
-              updateQuantity(item.id, Math.max(1, item.quantity - 1))
-            }
-            className="w-8 h-8 border border-gray-300 rounded-l-md flex items-center justify-center hover:bg-gray-100 transition-colors"
-          >
-            -
-          </button>
-          <input
-            type="number"
-            min="1"
-            value={item.quantity}
-            onChange={(e) =>
-              updateQuantity(
-                item.id,
-                Math.max(1, parseInt(e.target.value) || 1)
-              )
-            }
-            className="w-12 h-8 border-t border-b border-gray-300 text-center focus:outline-none"
-          />
-          <button
-            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-            className="w-8 h-8 border border-gray-300 rounded-r-md flex items-center justify-center hover:bg-gray-100 transition-colors"
-          >
-            +
-          </button>
-        </div>
+      {/* Quantity */}
+      <div className="quantity-control">
+        <button
+          onClick={() =>
+            updateQuantity(item.id, Math.max(1, item.quantity - 1))
+          }
+        >
+          -
+        </button>
+        <input
+          type="number"
+          min="1"
+          value={item.quantity}
+          onChange={(e) =>
+            updateQuantity(item.id, Math.max(1, parseInt(e.target.value) || 1))
+          }
+        />
+        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+          +
+        </button>
       </div>
 
-      {/* Price (2 cols) */}
-      <div className="md:col-span-2 flex items-center font-medium">
+      {/* Price */}
+      <div className="cart-item-price">
         ${(item.price * item.quantity).toFixed(2)}
       </div>
 
-      {/* Remove Button (1 col) */}
-      <div className="md:col-span-1 flex items-center justify-end">
+      {/* Remove Button */}
+      <div>
         <button
           onClick={() => removeFromCart(item.id)}
-          className="text-gray-400 hover:text-red-500 transition-colors"
+          className="remove-button"
           aria-label="Remove item"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="remove-icon"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -105,6 +89,58 @@ const CartItem = ({ item, removeFromCart, updateQuantity }) => {
 };
 
 const CartPage = ({ cartItems, removeFromCart, updateQuantity, cartTotal }) => {
+  const buttonRef = useRef(null);
+  const topLeftRef = useRef(null);
+  const topRightRef = useRef(null);
+  const bottomLeftRef = useRef(null);
+  const bottomRightRef = useRef(null);
+
+  useEffect(() => {
+    if (!buttonRef.current) return;
+
+    const corners = [
+      topLeftRef.current,
+      topRightRef.current,
+      bottomLeftRef.current,
+      bottomRightRef.current,
+    ];
+
+    gsap.set(corners, {
+      opacity: 0,
+      scale: 0,
+    });
+
+    const timeline = gsap.timeline({ paused: true });
+
+    timeline.to(corners, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.25,
+      stagger: 0.05,
+      ease: "back.out(1.5)",
+    });
+
+    // Add event listeners for hover
+    const button = buttonRef.current;
+
+    const handleMouseEnter = () => {
+      timeline.play();
+    };
+
+    const handleMouseLeave = () => {
+      timeline.reverse();
+    };
+
+    button.addEventListener("mouseenter", handleMouseEnter);
+    button.addEventListener("mouseleave", handleMouseLeave);
+
+    // Cleanup
+    return () => {
+      button.removeEventListener("mouseenter", handleMouseEnter);
+      button.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
   useGSAP(() => {
     gsap.from(".cart-item", {
       opacity: 0,
@@ -125,10 +161,9 @@ const CartPage = ({ cartItems, removeFromCart, updateQuantity, cartTotal }) => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container-custom py-32 text-center">
+      <div className="empty-cart">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-16 w-16 mx-auto text-gray-400 mb-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -140,33 +175,45 @@ const CartPage = ({ cartItems, removeFromCart, updateQuantity, cartTotal }) => {
             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
           />
         </svg>
-        <h2 className="text-2xl font-bold mb-4">Your Cart is Empty</h2>
-        <p className="text-gray-600 mb-8">
-          Looks like you haven't added any products to your cart yet.
-        </p>
-        <Link to="/shop" className="btn-primary">
-          Start Shopping
+        <h2>Your Cart is Empty</h2>
+        <p>Looks like you haven't added any products to your cart yet.</p>
+        <Link to="/shop">
+          <div className="button-containers" ref={buttonRef}>
+            <div className="corner2 top-left" ref={topLeftRef}></div>
+            <div className="corner2 top-right" ref={topRightRef}></div>
+            <div className="corner2 bottom-left" ref={bottomLeftRef}></div>
+            <div className="corner2 bottom-right" ref={bottomRightRef}></div>
+            <button className="touch-button">
+              Start Shopping
+              <img src={arrow} alt="" className="arrow-icon" />
+            </button>
+          </div>
         </Link>
       </div>
     );
   }
 
-  return (
-    <div className="container-custom py-16 md:py-24">
-      <h1 className="text-3xl font-bold mb-12 text-center md:text-left">
-        Your Cart
-      </h1>
+  // Calculate tax (7%)
+  const tax = cartTotal * 0.07;
+  // Calculate final total
+  const finalTotal = cartTotal + tax;
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+  return (
+    <div className="cart-container">
+      <div className="cart-header">
+        <h1>Your Cart</h1>
+      </div>
+
+      <div className="cart-grid">
         {/* Cart Items */}
-        <div className="lg:col-span-8">
+        <div className="cart-items-container">
           {/* Cart Header - Desktop Only */}
-          <div className="hidden md:grid md:grid-cols-12 gap-4 pb-4 border-b border-gray-200 text-gray-500 font-medium">
-            <div className="md:col-span-2">Product</div>
-            <div className="md:col-span-4">Details</div>
-            <div className="md:col-span-3">Quantity</div>
-            <div className="md:col-span-2">Price</div>
-            <div className="md:col-span-1"></div>
+          <div className="cart-table-header">
+            <div>Product</div>
+            <div>Details</div>
+            <div>Quantity</div>
+            <div>Price</div>
+            <div></div>
           </div>
 
           {/* Cart Items */}
@@ -182,70 +229,60 @@ const CartPage = ({ cartItems, removeFromCart, updateQuantity, cartTotal }) => {
           </div>
 
           {/* Continue Shopping */}
-          <div className="mt-8">
-            <Link
-              to="/shop"
-              className="text-primary-600 hover:text-primary-800 transition-colors inline-flex items-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-              Continue Shopping
+          <div className="continue-shopping">
+            <Link to="/shop">
+              <div className="button-containers" ref={buttonRef}>
+                <div className="corner2 top-left" ref={topLeftRef}></div>
+                <div className="corner2 top-right" ref={topRightRef}></div>
+                <div className="corner2 bottom-left" ref={bottomLeftRef}></div>
+                <div
+                  className="corner2 bottom-right"
+                  ref={bottomRightRef}
+                ></div>
+                <button className="touch-button">
+                  Continue Shopping
+                  <img src={arrow} alt="" className="arrow-icon" />
+                </button>
+              </div>
             </Link>
           </div>
         </div>
 
         {/* Cart Summary */}
         <div className="cart-summary">
-          <div className="cart-summary bg-gray-50 rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-6">Order Summary</h2>
+          <h2>Order Summary</h2>
 
-            <div className="space-y-3 text-gray-600">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-medium">${cartTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span className="font-medium">Free</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tax</span>
-                <span className="font-medium">
-                  ${(cartTotal * 0.07).toFixed(2)}
-                </span>
-              </div>
-            </div>
+          <div className="summary-row">
+            <span className="label">Subtotal</span>
+            <span className="value">${cartTotal.toFixed(2)}</span>
+          </div>
 
-            <div className="border-t border-gray-200 my-6 pt-6">
-              <div className="flex justify-between text-lg font-bold">
-                <span>Total</span>
-                <span>${(cartTotal + cartTotal * 0.07).toFixed(2)}</span>
-              </div>
-            </div>
-            <Link to={Checkout}>
-              <button className="btn-primary w-full py-4">Checkout Now </button>
-            </Link>
+          <div className="summary-row">
+            <span className="label">Shipping</span>
+            <span className="value">Free</span>
+          </div>
 
-            <div className="mt-6 text-center text-sm text-gray-500">
-              <p>We accept</p>
-              <div className="flex justify-center space-x-2 mt-2">
-                <div className="w-10 h-6 bg-blue-800 rounded"></div>
-                <div className="w-10 h-6 bg-red-600 rounded"></div>
-                <div className="w-10 h-6 bg-gray-800 rounded"></div>
-                <div className="w-10 h-6 bg-yellow-500 rounded"></div>
-              </div>
+          <div className="summary-row">
+            <span className="label">Tax (7%)</span>
+            <span className="value">${tax.toFixed(2)}</span>
+          </div>
+
+          <div className="summary-row total">
+            <span className="label">Total</span>
+            <span className="value">${finalTotal.toFixed(2)}</span>
+          </div>
+
+          <Link to="/checkout" className="checkout-button">
+            Proceed to Checkout
+          </Link>
+
+          <div className="payment-methods">
+            <p>We accept</p>
+            <div className="payment-icons">
+              <div className="payment-icon visa"></div>
+              <div className="payment-icon mastercard"></div>
+              <div className="payment-icon amex"></div>
+              <div className="payment-icon paypal"></div>
             </div>
           </div>
         </div>
