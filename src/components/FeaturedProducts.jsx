@@ -1,19 +1,34 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "../styles/FeaturedProducts.css";
-
-import hoodieImg from "../assets/bedandpillow.png";
-import hoodieHoverImg from "../assets/bedandpillow2.jpg";
-import toteImg from "../assets/pillow-blue.png";
-import toteHoverImg from "../assets/pillow-blue2.jpg";
-import varsityJacketImg from "../assets/bed-spreed.png";
-import varsityJacketHoverImg from "../assets/bed-spreed2.jpg";
-import monaFigurineImg from "../assets/pillow0.png";
-import monaFigurineHoverImg from "../assets/pillow02.jpg";
+import "../styles/Hero.css";
+import products from "../data/products";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
+
+const ProductCard = ({ product }) => {
+  const [currentImage, setCurrentImage] = useState(product.image);
+
+  return (
+    <div className="productcard product-card">
+      <Link to={`/product/${product.id}`} className="product-link">
+        <div
+          className="product-image"
+          onMouseEnter={() => setCurrentImage(product.alternateImage)}
+          onMouseLeave={() => setCurrentImage(product.image)}
+        >
+          <img src={currentImage} alt={product.name} />
+        </div>
+        <div className="productinfo">
+          <h3 className="productname">{product.name}</h3>
+          <p className="productprice">Price ${product.price.toFixed(2)}</p>
+        </div>
+      </Link>
+    </div>
+  );
+};
 
 const FeaturedProducts = () => {
   const sectionRef = useRef(null);
@@ -35,8 +50,9 @@ const FeaturedProducts = () => {
     });
 
     // Products animation - staggered entry
-    const products = productsRef.current.querySelectorAll(".product-card");
-    gsap.from(products, {
+    const productElements =
+      productsRef.current.querySelectorAll(".product-card");
+    gsap.from(productElements, {
       y: 50,
       opacity: 0,
       duration: 0.6,
@@ -55,41 +71,8 @@ const FeaturedProducts = () => {
     };
   }, []);
 
-  // Featured product data
-  const featuredProducts = [
-    {
-      id: 1,
-      name: '"The Classic" Invertocat Hoodie',
-      price: 57,
-      image: hoodieImg,
-      alternateImage: hoodieHoverImg,
-      link: "/products/invertocat-hoodie",
-    },
-    {
-      id: 2,
-      name: "All Purpose Tote",
-      price: 13,
-      image: toteImg,
-      alternateImage: toteHoverImg,
-      link: "/products/all-purpose-tote",
-    },
-    {
-      id: 3,
-      name: "Mona Varsity Jacket",
-      price: 100,
-      image: varsityJacketImg,
-      alternateImage: varsityJacketHoverImg,
-      link: "/products/gh-varsity-jacket",
-    },
-    {
-      id: 4,
-      name: 'Mona Figurine 5.5"',
-      price: 35,
-      image: monaFigurineImg,
-      alternateImage: monaFigurineHoverImg,
-      link: "/products/mona-figurine",
-    },
-  ];
+  // Get only featured products from our data
+  const featuredProducts = products.filter((product) => product.featured);
 
   return (
     <section className="featured-section" ref={sectionRef}>
@@ -98,26 +81,9 @@ const FeaturedProducts = () => {
           Featured Products
         </h2>
         <div className="products-grid" ref={productsRef}>
-          {featuredProducts.map((product) => {
-            const [currentImage, setCurrentImage] = useState(product.image);
-            return (
-              <div className="productcard" key={product.id}>
-                <a href={product.link} className="product-link">
-                  <div
-                    className="product-image"
-                    onMouseEnter={() => setCurrentImage(product.alternateImage)}
-                    onMouseLeave={() => setCurrentImage(product.image)}
-                  >
-                    <img src={currentImage} alt={product.name} />
-                  </div>
-                  <div className="productinfo">
-                    <h3 className="productname">{product.name}</h3>
-                    <p className="productprice">Price ${product.price}</p>
-                  </div>
-                </a>
-              </div>
-            );
-          })}
+          {featuredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       </div>
     </section>
