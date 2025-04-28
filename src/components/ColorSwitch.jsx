@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import "./ColorSwitch.css";
+import "../styles/Hero.css";
 
 const ColorSwitch = ({ onColorChange, currentColor = "purple" }) => {
   const colorOptions = [
