@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import ColorSwitch from "./ColorSwitch";
-import "./ChairCarousel.css";
+import "../styles/Hero.css";
 
 const ChairCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -11,6 +11,7 @@ const ChairCarousel = () => {
   const dotsRef = useRef([]);
   const timeline = useRef(null);
   const isAnimating = useRef(false);
+  const intervalRef = useRef(null);
 
   // Chair data with color variations
   const chairsData = [
@@ -90,14 +91,18 @@ const ChairCarousel = () => {
       "-=0.5"
     );
 
-    // Auto-play carousel
-    // const interval = setInterval(() => {
+    // Auto-play carousel (commented out for now)
+    // intervalRef.current = setInterval(() => {
     //   if (!document.hidden && !isAnimating.current) {
     //     nextSlide();
     //   }
     // }, 8000);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
 
   // Effect for color changes
