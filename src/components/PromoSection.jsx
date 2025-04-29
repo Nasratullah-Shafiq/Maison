@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import playingCardsImg from "../assets/bg2.png";
 import arrow from "../assets/arrow.svg";
-import "../styles/PromoSection.css";
+import "../styles/Hero.css";
 import ChairCarousel from "./ChairCarousel";
 
 // Register ScrollTrigger plugin
