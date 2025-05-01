@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "../styles/ShoppingInfo.css";
+import "../styles/Hero.css";
 
 const ShoppingInfo = () => {
   const pageRef = useRef(null);
