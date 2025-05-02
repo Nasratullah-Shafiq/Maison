@@ -1,19 +1,61 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import arrow from "../assets/arrownext.svg";
-
+import arrow from "../assets/arrow.svg";
+import products from "../data/products";
 import "../styles/ShopPage.css";
-const Products = () => {
+
+const ShopPage = ({ addToCart }) => {
   const pageRef = useRef(null);
   const headerRef = useRef(null);
   const filtersRef = useRef(null);
   const productsRef = useRef(null);
-  const imageRef = useRef(null);
   const [sortBy, setSortBy] = useState("featured");
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showFeatureMenu, setShowFeatureMenu] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  // Get category from URL if available
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const categoryFromUrl = urlParams.get("category");
+
+  // Set the active category from URL or location state on component mount
+  useEffect(() => {
+    if (categoryFromUrl) {
+      setActiveCategory(categoryFromUrl);
+    } else if (location.state && location.state.category) {
+      setActiveCategory(location.state.category);
+    }
+  }, [categoryFromUrl, location.state]);
+
+  // Apply sorting and filtering
+  useEffect(() => {
+    let productsToShow = [...products];
+
+    // Apply category filtering
+    if (activeCategory !== "all") {
+      productsToShow = productsToShow.filter(
+        (product) => product.category === activeCategory
+      );
+    }
+
+    // Apply sorting
+    if (sortBy === "price-low") {
+      productsToShow.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-high") {
+      productsToShow.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "newest") {
+      // If we had a date field, we'd sort by that
+      // For now, just use the id as a proxy for newness
+      productsToShow.sort((a, b) => b.id - a.id);
+    }
+    // featured is the default order from data
+
+    setFilteredProducts(productsToShow);
+  }, [sortBy, activeCategory]);
 
   useEffect(() => {
     // Reset scroll position
@@ -56,6 +98,9 @@ const Products = () => {
       }
     );
 
+    // Initialize filtered products
+    setFilteredProducts(products);
+
     return () => {
       // Clean up animations
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -75,107 +120,47 @@ const Products = () => {
     setShowSortMenu(false);
   };
 
-  // Product data
-  const products = [
-    {
-      id: 1,
-      name: "Universetocat Stickers - Pack of 2",
-      price: "$2",
-      image: "/images/product1.jpg",
-      category: "stickers",
-      isNew: true,
-    },
-    {
-      id: 2,
-      name: "SuperTsar Logo Patch Cropped Crewneck",
-      price: "$98",
-      image: "/images/product2.jpg",
-      category: "apparel",
-    },
-    {
-      id: 3,
-      name: "Logo Bucket Hat",
-      price: "$30",
-      image: "/images/product3.jpg",
-      category: "accessories",
-      isOnSale: true,
-    },
-    {
-      id: 4,
-      name: "Universe 24 Socks",
-      price: "$18",
-      salePrice: "$15.30",
-      image: "/images/product4.jpg",
-      category: "accessories",
-      isOnSale: true,
-    },
-    {
-      id: 5,
-      name: "Universe 24 Patches - Set of 4",
-      price: "$20",
-      salePrice: "$17.00",
-      image: "/images/product5.jpg",
-      category: "accessories",
-      isOnSale: true,
-    },
-    {
-      id: 6,
-      name: "Universe 24 Cap",
-      price: "$25.00",
-      image: "/images/product6.jpg",
-      category: "accessories",
-      isOnSale: true,
-    },
-    {
-      id: 7,
-      name: "GitHub Skateboard Deck 7.8",
-      price: "$109",
-      image: "/images/product7.jpg",
-      category: "collectibles",
-    },
-    {
-      id: 8,
-      name: "Playing Cards",
-      price: "$17",
-      image: "/images/product8.jpg",
-      category: "collectibles",
-    },
-    {
-      id: 9,
-      name: "Octocat Pin",
-      price: "$9",
-      image: "/images/product9.jpg",
-      category: "accessories",
-    },
-    {
-      id: 10,
-      name: "Ship It Glow Mug",
-      price: "$20",
-      image: "/images/product10.jpg",
-      category: "drinkware",
-    },
-    {
-      id: 11,
-      name: "Copilot Glow-in-the-Dark Shirt",
-      price: "$32",
-      image: "/images/product11.jpg",
-      category: "apparel",
-    },
-    {
-      id: 12,
-      name: "Copilot Glow-in-the-Dark Hoodie",
-      price: "$65",
-      image: "/images/product12.jpg",
-      category: "apparel",
-    },
+  const handleAddToCart = (product) => {
+    addToCart(product);
+
+    // Animation for add to cart button
+    gsap.to(`#add-to-cart-${product.id}`, {
+      scale: 1.1,
+      duration: 0.2,
+      yoyo: true,
+      repeat: 1,
+    });
+  };
+
+  // Get unique categories from products
+  const categories = [
+    "all",
+    ...new Set(products.map((product) => product.category)),
   ];
+
+  // Format category name for display
+  const formatCategoryName = (category) => {
+    if (category === "all") return "All Products";
+
+    // Convert from kebab-case or snake_case to Title Case with spaces
+    return category
+      .replace(/-|_/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
 
   return (
     <div ref={pageRef} className="products-page">
-      <div className="container">
+      <div className="shop-container">
         <div ref={headerRef} className="products-header">
           <div className="breadcrumb">
-            <Link to="/products">PRODUCTS</Link> / <span>ALL</span>
+            <Link to="/">HOME</Link> / <Link to="/shop">SHOP</Link> /
+            <span>
+              {activeCategory === "all"
+                ? " ALL PRODUCTS"
+                : ` ${formatCategoryName(activeCategory).toUpperCase()}`}
+            </span>
           </div>
 
           <div className="products-sorting">
@@ -261,38 +246,28 @@ const Products = () => {
             <div className="sidebar-section">
               <h3 className="sidebar-title">All Products</h3>
               <ul className="category-list">
+                {categories.map((category) => (
+                  <li
+                    key={category}
+                    className={`category-item ${
+                      activeCategory === category ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      className="category-link-button"
+                      onClick={() => setActiveCategory(category)}
+                    >
+                      {formatCategoryName(category)}
+                    </button>
+                  </li>
+                ))}
                 <li className="category-item">
-                  <Link to="/" className="category-link">
+                  <Link to="/shop" className="category-link">
                     New Arrivals
                   </Link>
                 </li>
                 <li className="category-item">
-                  <Link to="/" className="category-link">
-                    Best Sellers
-                  </Link>
-                </li>
-                <li className="category-item">
-                  <Link to="/" className="category-link">
-                    Stickers
-                  </Link>
-                </li>
-                <li className="category-item">
-                  <Link to="/" className="category-link">
-                    Apparel
-                  </Link>
-                </li>
-                <li className="category-item">
-                  <Link to="/" className="category-link">
-                    Lifestyle
-                  </Link>
-                </li>
-                <li className="category-item">
-                  <Link to="/" className="category-link">
-                    Collectibles
-                  </Link>
-                </li>
-                <li className="category-item">
-                  <Link to="/" className="category-link">
+                  <Link to="/shop" className="category-link">
                     Sale
                   </Link>
                 </li>
@@ -303,166 +278,123 @@ const Products = () => {
               <h3 className="sidebar-title">COLLECTION</h3>
               <ul className="collection-list">
                 <li className="collection-item">
-                  <Link to="/" className="collection-link">
-                    SPORTtech
+                  <Link
+                    to="/shop?category=bedspreads"
+                    className="collection-link"
+                    onClick={() => setActiveCategory("bedspreads")}
+                  >
+                    Bedroom
                   </Link>
                 </li>
                 <li className="collection-item">
-                  <Link to="/" className="collection-link">
-                    WFH
+                  <Link
+                    to="/shop?category=bedroom-sets"
+                    className="collection-link"
+                    onClick={() => setActiveCategory("bedroom-sets")}
+                  >
+                    Living Room
                   </Link>
                 </li>
                 <li className="collection-item">
-                  <Link to="/" className="collection-link">
-                    Pride
+                  <Link
+                    to="/shop"
+                    className="collection-link"
+                    onClick={() => setActiveCategory("all")}
+                  >
+                    Dining
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div className="sidebar-section">
-              <h3 className="sidebar-title">TYPE</h3>
-              <div className="filter-options">
-                <div className="filter-option">
-                  <input type="checkbox" id="type-accessories" />
-                  <label htmlFor="type-accessories">Accessories</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-bags" />
-                  <label htmlFor="type-bags">Bags</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-collectibles" />
-                  <label htmlFor="type-collectibles">Collectibles</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-drinkware" />
-                  <label htmlFor="type-drinkware">Drinkware</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-kids" />
-                  <label htmlFor="type-kids">Kids</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-outerwear" />
-                  <label htmlFor="type-outerwear">Outerwear</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-shirts" />
-                  <label htmlFor="type-shirts">Shirts</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-stickers" />
-                  <label htmlFor="type-stickers">Stickers</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="type-technology" />
-                  <label htmlFor="type-technology">Technology</label>
-                </div>
-              </div>
-            </div>
-
-            <div className="sidebar-section">
               <h3 className="sidebar-title">COLOR</h3>
               <div className="color-options">
-                <button className="color-option beige"></button>
-                <button className="color-option black"></button>
-                <button className="color-option blue"></button>
-                <button className="color-option gold"></button>
-                <button className="color-option green"></button>
-                <button className="color-option navy"></button>
-                <button className="color-option orange"></button>
-                <button className="color-option pink"></button>
-                <button className="color-option purple"></button>
-                <button className="color-option red"></button>
-                <button className="color-option yellow"></button>
+                <button
+                  className="color-option"
+                  style={{ backgroundColor: "#ffffff" }}
+                  title="White"
+                ></button>
+                <button
+                  className="color-option"
+                  style={{ backgroundColor: "#f5f5dc" }}
+                  title="Beige"
+                ></button>
+                <button
+                  className="color-option"
+                  style={{ backgroundColor: "#808080" }}
+                  title="Gray"
+                ></button>
+                <button
+                  className="color-option"
+                  style={{ backgroundColor: "#1e3a8a" }}
+                  title="Blue"
+                ></button>
+                <button
+                  className="color-option"
+                  style={{ backgroundColor: "#172554" }}
+                  title="Navy"
+                ></button>
               </div>
             </div>
 
             <div className="sidebar-section">
               <h3 className="sidebar-title">SIZE</h3>
               <div className="size-options">
-                <button className="size-option">XS</button>
                 <button className="size-option">S</button>
                 <button className="size-option">M</button>
                 <button className="size-option">L</button>
-                <button className="size-option">XL</button>
-                <button className="size-option">2XL</button>
-                <button className="size-option">3XL</button>
-                <button className="size-option">Infant</button>
-                <button className="size-option">Toddler</button>
-                <button className="size-option">Kids</button>
-                <button className="size-option">8 in</button>
-                <button className="size-option">24 in</button>
-              </div>
-            </div>
-
-            <div className="sidebar-section">
-              <h3 className="sidebar-title">FIT</h3>
-              <div className="filter-options">
-                <div className="filter-option">
-                  <input type="checkbox" id="fit-fitted" />
-                  <label htmlFor="fit-fitted">Fitted</label>
-                </div>
-                <div className="filter-option">
-                  <input type="checkbox" id="fit-standard" />
-                  <label htmlFor="fit-standard">Standard</label>
-                </div>
+                <button className="size-option">Twin</button>
+                <button className="size-option">Queen</button>
+                <button className="size-option">King</button>
               </div>
             </div>
           </div>
 
           <div ref={productsRef} className="products-grid">
-            {products.map((product) => (
-              <div key={product.id} className="product-card">
-                <div className="product-image">
-                  <Link to={`/products/${product.id}`}>
-                    <img
-                      src={
-                        product.image ||
-                        `https://via.placeholder.com/300x300?text=${product.name}`
-                      }
-                      alt={product.name}
-                    />
-                    {product.isNew && (
-                      <span className="badge new-badge">NEW</span>
-                    )}
-                    {product.isOnSale && (
-                      <span className="badge sale-badge">SALE</span>
-                    )}
-                    <div className="quick-view">
-                      <button className="quick-view-btn"></button>
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div key={product.id} className="product-card">
+                  <div className="product-image">
+                    <Link to={`/product/${product.id}`}>
+                      <img src={product.image} alt={product.name} />
+                      {product.isNew && (
+                        <span className="badge new-badge">NEW</span>
+                      )}
+                      {product.isOnSale && (
+                        <span className="badge sale-badge">SALE</span>
+                      )}
+                    </Link>
+                  </div>
+                  <div className="product-info">
+                    <h3 className="product-name">
+                      <Link to={`/product/${product.id}`}>{product.name}</Link>
+                    </h3>
+                    <div className="product-price">
+                      <span>${product.price.toFixed(2)}</span>
                     </div>
-                  </Link>
-                </div>
-                <div className="product-info">
-                  <h3 className="product-name">
-                    <Link to={`/products/${product.id}`}>{product.name}</Link>
-                  </h3>
-                  <div className="product-price">
-                    {product.salePrice ? (
-                      <>
-                        <span className="original-price">{product.price}</span>
-                        <span className="sale-price">{product.salePrice}</span>
-                      </>
-                    ) : (
-                      <span>{product.price}</span>
-                    )}
+                    <button
+                      id={`add-to-cart-${product.id}`}
+                      className="add-to-cart-btn"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="no-products-message">
+                <p>
+                  No products found in this category. Try a different filter.
+                </p>
               </div>
-            ))}
+            )}
           </div>
-        </div>
-
-        <div className="pagination">
-          <button className="load-more-btn">
-            LOAD MORE <img src={arrow} alt="" className="arrow-icon" />
-          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default Products;
+export default ShopPage;
