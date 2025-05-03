@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
-// import bag from "../assets/bag.svg";
 import "../styles/Header.css";
 import SearchBar from "./SearchBar";
 
@@ -113,9 +112,9 @@ const Header = ({ cartItemsCount }) => {
         <div className="container banner-content">
           <span> Free</span>
           <p>The best things in life are free, now including .....</p>
-          <a href="#" className="learn-more">
+          <Link to="#" className="learn-more">
             Learn more
-          </a>
+          </Link>
           <button className="close-banner" onClick={closeBanner}>
             ×
           </button>
@@ -132,7 +131,7 @@ const Header = ({ cartItemsCount }) => {
                 <div className="corner bottom-left" ref={bottomLeftRef}></div>
                 <div className="corner bottom-right" ref={bottomRightRef}></div>
                 <li className="nav-item touch-nav">
-                  <a href="/collections/shop-all">All Products</a>
+                  <Link to="/shop">All Products</Link>
                 </li>
               </div>
 
@@ -142,7 +141,7 @@ const Header = ({ cartItemsCount }) => {
                 <div className="corner bottom-left" ref={bottomLeftRef}></div>
                 <div className="corner bottom-right" ref={bottomRightRef}></div>
                 <li className="nav-item touch-nav">
-                  <a href="/collections/collectibles">Collectibles</a>
+                  <Link to="/shop">Collectibles</Link>
                 </li>
               </div>
               <div className="button-container" ref={buttonRef}>
@@ -151,14 +150,14 @@ const Header = ({ cartItemsCount }) => {
                 <div className="corner bottom-left" ref={bottomLeftRef}></div>
                 <div className="corner bottom-right" ref={bottomRightRef}></div>
                 <li className="nav-item touch-nav">
-                  <a href="/collections/lifestyle">Lifestyle</a>
+                  <Link to="/shop">Lifestyle</Link>
                 </li>
               </div>
             </ul>
           </nav>
-          <a href="/" className="logo">
+          <Link to="/" className="logo">
             <span>MaisonTissu</span>
-          </a>
+          </Link>
 
           <div className="header-actions">
             <SearchBar />
