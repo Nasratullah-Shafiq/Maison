@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import products from "../data/products";
-import "../styles/SearchBar.css";
+import "../styles/Hero.css";
 
 const SearchBar = ({ inline = false }) => {
   const [searchQuery, setSearchQuery] = useState("");
