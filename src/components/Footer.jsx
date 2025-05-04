@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "../styles/Footer.css";
+import "../styles/Header.css";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
