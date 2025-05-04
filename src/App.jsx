@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Router, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -10,7 +10,6 @@ import PromoSection from "./components/PromoSection";
 import CategorySection from "./components/CategorySection";
 import Footer from "./components/Footer";
 import "./App.css";
-import { Route } from "react-router-dom";
 
 import CartPage from "./components/CartPage";
 import ShopPage from "./components/ShopPage";
@@ -18,7 +17,8 @@ import ContactPage from "./components/ContactPage";
 import ShoppingInfo from "./components/ShoppingInfo";
 import Login from "./components/Login";
 import HeroProduct from "./product/HeroProduct";
-// import Account from "./components/Account";
+import Checkout from "./components/Checkout";
+
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -111,9 +111,9 @@ function App() {
             </>
           }
         />
-        {/* <Route
+        <Route
           path="/product/:id"
-          element={< addToCart={addToCart} />}
+          element={<HeroProduct addToCart={addToCart} />}
         />
         <Route
           path="/cart"
@@ -125,12 +125,12 @@ function App() {
               cartTotal={cartTotal}
             />
           }
-        /> */}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<ShopPage addToCart={addToCart} />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/shoppinginfo" element={<ShoppingInfo />} />
-        <Route path="/products/:productId" element={<HeroProduct />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
 
       <Footer />
