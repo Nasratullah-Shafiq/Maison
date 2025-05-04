@@ -2,28 +2,33 @@ import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import "./ProductViewer.css";
 
-const ProductViewer = ({ selectedColor }) => {
+const ProductViewer = ({ selectedColor, product }) => {
   const productRef = useRef(null);
   const containerRef = useRef(null);
   const [activeView, setActiveView] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [prevColor, setPrevColor] = useState(selectedColor);
+  const [currentImage, setCurrentImage] = useState(product?.image || "");
 
-  // Pillow images based on the selected color
-  const getPillowImage = () => {
-    switch (selectedColor) {
-      case "blue":
-        return "/src/assets/pillows/pillow-blue.png";
-      case "mint":
-        return "/src/assets/pillows/pillow-mint.png";
-      case "decorative":
-        return "/src/assets/pillows/pillow-decorative-set.png";
-      case "monogram":
-        return "/src/assets/pillows/pillow-decorative-e.png";
-      default:
-        return "/src/assets/pillows/pillow-white.png";
+  // Effect to update image when product or selectedColor changes
+  useEffect(() => {
+    if (!product) return;
+
+    // Find the color in product colors if available
+    if (product.colors && product.colors.length > 0) {
+      const colorObj = product.colors.find((c) => c.name === selectedColor);
+      if (colorObj && colorObj.image) {
+        // If we have a color-specific image, use it
+        setCurrentImage(colorObj.image);
+      } else {
+        // Fallback to default product image
+        setCurrentImage(product.image);
+      }
+    } else {
+      // Use default product image
+      setCurrentImage(product.image);
     }
-  };
+  }, [product, selectedColor]);
 
   // Views (angles/features to showcase)
   const views = [
@@ -78,7 +83,7 @@ const ProductViewer = ({ selectedColor }) => {
       duration: 0.5,
       ease: "back.out(1.7)",
     });
-  }, [selectedColor]);
+  }, [selectedColor, activeView, views]);
 
   // Initial load animation
   useEffect(() => {
@@ -116,11 +121,16 @@ const ProductViewer = ({ selectedColor }) => {
       duration: 2,
       ease: "sine.inOut",
     });
+
+    // Clean up animation
+    return () => {
+      floatAnimation.kill();
+    };
   }, []);
 
   // Handle 3D animation with GSAP
   useEffect(() => {
-    if (!productRef.current) return;
+    if (!productRef.current || !views[activeView]) return;
 
     setIsAnimating(true);
 
@@ -136,11 +146,12 @@ const ProductViewer = ({ selectedColor }) => {
       ease: "power3.out",
       onComplete: () => setIsAnimating(false),
     });
-  }, [activeView]);
+  }, [activeView, views]);
 
   // Mouse move effect for parallax
   useEffect(() => {
-    if (!containerRef.current || !productRef.current) return;
+    if (!containerRef.current || !productRef.current || !views[activeView])
+      return;
 
     const container = containerRef.current;
 
@@ -164,14 +175,29 @@ const ProductViewer = ({ selectedColor }) => {
     return () => {
       container.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [activeView, isAnimating]);
+  }, [activeView, isAnimating, views]);
+
+  // If no product is available
+  if (!product) {
+    return (
+      <div className="product-viewer">
+        <div className="product-not-found">Product not available</div>
+      </div>
+    );
+  }
 
   return (
     <div className="product-viewer">
       <div className="product-viewer-container" ref={containerRef}>
         <div className="product-image-wrapper">
           <div className="product-images" ref={productRef}>
-            <img src={getPillowImage()} alt="Luxury Pillow" />
+            <img
+              src={currentImage}
+              alt={product.name}
+              onError={(e) => {
+                e.target.src = product.image; // Fallback to default image
+              }}
+            />
           </div>
         </div>
       </div>
