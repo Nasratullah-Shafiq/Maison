@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import "../styles/ContactPage.css";
+import "../styles/Hero.css";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
