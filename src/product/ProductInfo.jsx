@@ -15,11 +15,11 @@ const ProductInfo = ({
   setSelectedSize,
   quantity,
   setQuantity,
+  onAddToCart, // Added prop for handling the cart action
 }) => {
-  const selectedColorObj = product.colors.find((c) => c.name === selectedColor);
-  const selectedSizeObj = product.sizes.find((s) => s.name === selectedSize);
+  const selectedColorObj = product.colors && product.colors.find((c) => c.name === selectedColor);
+  const selectedSizeObj = product.sizes && product.sizes.find((s) => s.name === selectedSize);
 
-  const imageRef = useRef(null);
   const buttonRef = useRef(null);
   const topLeftRef = useRef(null);
   const topRightRef = useRef(null);
@@ -70,24 +70,21 @@ const ProductInfo = ({
       button.removeEventListener("mouseenter", handleMouseEnter);
       button.removeEventListener("mouseleave", handleMouseLeave);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Use the parent's onAddToCart function
   const handleAddToCart = () => {
-    const selectedProduct = {
-      name: product.name,
-      price: product.price,
-      color: selectedColorObj?.label || selectedColor,
-      size: selectedSizeObj?.label || selectedSize,
-      quantity,
-    };
+    if (onAddToCart) {
+      onAddToCart();
 
-    console.log("Adding to cart:", selectedProduct);
+      // Show feedback to the user
+      const colorName = selectedColorObj?.label || selectedColor;
+      const sizeName = selectedSizeObj?.label || selectedSize;
 
-    alert(
-      `Added to cart: ${quantity} ${selectedProduct.color} ${product.name} (${selectedProduct.size})`
-    );
-    window.location.href = "/CartPage";
+      alert(
+        `Added to cart: ${quantity} ${colorName} ${product.name} (${sizeName})`
+      );
+    }
   };
 
   return (
@@ -107,32 +104,36 @@ const ProductInfo = ({
       <p className="product-description">{product.description}</p>
 
       <ul className="product-features">
-        {product.features.map((feature, index) => (
+        {product.features && product.features.map((feature, index) => (
           <li key={index}>{feature}</li>
         ))}
       </ul>
 
-      <div className="product-color-section">
-        <h3>
-          Color <span>{selectedColorObj?.label || selectedColor}</span>
-        </h3>
-        <ColorSelector
-          colors={product.colors}
-          selectedColor={selectedColor}
-          onSelectColor={setSelectedColor}
-        />
-      </div>
+      {product.colors && product.colors.length > 0 && (
+        <div className="product-color-section">
+          <h3>
+            Color <span>{selectedColorObj?.label || selectedColor}</span>
+          </h3>
+          <ColorSelector
+            colors={product.colors}
+            selectedColor={selectedColor}
+            onSelectColor={setSelectedColor}
+          />
+        </div>
+      )}
 
-      <div className="product-size-section">
-        <h3>
-          Size <span>{selectedSizeObj?.dimensions || selectedSize}</span>
-        </h3>
-        <SizeSelector
-          sizes={product.sizes}
-          selectedSize={selectedSize}
-          onSelectSize={setSelectedSize}
-        />
-      </div>
+      {product.sizes && product.sizes.length > 0 && (
+        <div className="product-size-section">
+          <h3>
+            Size <span>{selectedSizeObj?.dimensions || selectedSize}</span>
+          </h3>
+          <SizeSelector
+            sizes={product.sizes}
+            selectedSize={selectedSize}
+            onSelectSize={setSelectedSize}
+          />
+        </div>
+      )}
 
       <div className="product-quantity-section">
         <h3>Quantity</h3>
