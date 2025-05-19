@@ -125,7 +125,7 @@ const Hero = () => {
     <section className="hero-section" ref={heroRef}>
       <div className="container hero-container">
         <div className="hero-content">
-          <h1 ref={headingRef}>
+          <h1 ref={headingRef}> 
             Wrap <span>Your Home </span>in Elegance & Comfort
           </h1>  
           <p ref={textRef}>
