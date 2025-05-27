@@ -127,7 +127,7 @@ const Hero = () => {
         <div className="hero-content">
           <h1 ref={headingRef}> 
             Wrap <span>Your Home </span>in Elegance & Comfort
-          </h1>      
+          </h1>       
           <p ref={textRef}>  
             Premium home textiles crafted with the finest materials to bring luxury and
             comfort to every room in your home
