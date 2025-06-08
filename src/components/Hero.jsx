@@ -130,7 +130,7 @@ const Hero = () => {
           </h1>        
           <p ref={textRef}>       
             Premium home textiles crafted with the finest materials to bring luxury and
-            comfort to every room in your home
+            comfort to every room in your home 
           </p>    
           {/* <Link to="/shop"> 
             <div className="button-containers" ref={buttonRef}>
