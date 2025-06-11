@@ -143,7 +143,7 @@ const Hero = () => {
                 <img src={arrow} alt="" className="arrow-icon" />
               </button> 
             </div>
-          </Link> */}
+          </Link> */} 
         </div>
       </div>
     </section>
