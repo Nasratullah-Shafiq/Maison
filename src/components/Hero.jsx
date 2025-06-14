@@ -141,7 +141,7 @@ const Hero = () => {
               <button className="touch-button">
                 SHOP NOW
                 <img src={arrow} alt="" className="arrow-icon" />
-              </button>  
+              </button>   
             </div>
           </Link> */} 
         </div>
