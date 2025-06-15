@@ -113,7 +113,7 @@ const Hero = () => {
         },
         "-=0.6"
       );
-
+ 
     return () => {
       if (tl.scrollTrigger) {
         tl.scrollTrigger.kill();
